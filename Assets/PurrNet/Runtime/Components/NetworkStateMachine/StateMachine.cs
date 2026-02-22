@@ -78,11 +78,7 @@ namespace PurrNet.StateMachine
                 return;
 
             var node = _syncedStates[_currentState.stateId];
-            if(isServer)
-                node.StateUpdate(true);
-            if(isClient)
-                node.StateUpdate(false);
-            node.StateUpdate();
+            node.StateUpdate(isServer);
         }
         
         void LateUpdate()
@@ -361,19 +357,11 @@ namespace PurrNet.StateMachine
                 
                 if (hasData && newState is StateNode<T> node)
                 {
-                    if(isServer)
-                        node.Enter(data, true);
-                    if(isClient)
-                        node.Enter(data, false);
-                    node.Enter(data);
+                    node.Enter(isServer);
                 }
                 else
                 {
-                    if(isServer)
-                        newState.Enter(true);
-                    if(isClient)
-                        newState.Enter(false);
-                    newState.Enter();
+                    newState.Enter(isServer);
                 }
             }
             catch(Exception e)
@@ -429,11 +417,7 @@ namespace PurrNet.StateMachine
             {
                 if (oldState)
                 {
-                    if(isServer)
-                        oldState.Exit(true);
-                    if (isClient)
-                        oldState.Exit(false);
-                    oldState.Exit();
+                    oldState.Exit(isServer);
                 }
             }
             catch (Exception e)
@@ -490,11 +474,7 @@ namespace PurrNet.StateMachine
                     {
                         onStateChanged?.Invoke(prevState, newState);
                     });
-                    if(isServer)
-                        state.Enter(data, true);
-                    if(isClient)
-                        state.Enter(data, false);
-                    state.Enter(data);
+                    state.Enter(data, isServer);
                 }
             }
             catch (Exception e)
@@ -548,11 +528,7 @@ namespace PurrNet.StateMachine
                     {
                         onStateChanged?.Invoke(prevState, newState);
                     });
-                    if(isServer)
-                        state.Enter(true);
-                    if(isClient)
-                        state.Enter(false);
-                    state.Enter();
+                    state.Enter(isServer);
                 }
             }
             catch (Exception e)
